@@ -29,8 +29,11 @@ function App() {
         <p id="text">{quote.text}</p>
         <p id="author">{quote.author}</p>
 
-        <button id="new-quote" type="submit" value="Submit" onClick={() => dispatch(randomQuote)}> New Quote </button>
+        <button id="new-quote" type="submit" value="Submit" onClick={(event) => {
+            event.preventDefault();
+            dispatch(randomQuote())}}> New Quote </button>
 
+        <span className="material-icons " onClick={() => {dispatch(addfavourite(quote))}}>favorite</span>
     </div>
   );
 }

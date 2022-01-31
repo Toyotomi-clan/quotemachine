@@ -7,21 +7,45 @@ export interface HistoryState {
     currentQuote: Quote
 }
 
+const emptyQuote : Quote = {
+    author: "",
+    text: ""
+}
+
 const initialState : HistoryState = {
     allQuotes: [],
     favouriteQuotes: [],
-    currentQuote: {author: "", text: ""}
+    currentQuote: emptyQuote
 }
+
 
 export const historySlice = createSlice({
     name: "history",
     initialState,
     reducers: {
-      addfavourite: (state, action: PayloadAction<number>) => {
-          if(action.payload === 0 || action.payload > state.allQuotes.length ){
+      addfavourite: (state, action: PayloadAction<Quote>) => {
+          if(action.payload === emptyQuote || state.allQuotes === [] ){
               return;
           }
-        state.favouriteQuotes.push(action.payload);
+
+          let quoteInArray = state.allQuotes.find((q,i) =>{
+              return q.author === action.payload.author && q.text === action.payload.text
+          });
+
+          if(!quoteInArray){
+              return;
+          }
+          let index = state.allQuotes.indexOf(quoteInArray)
+
+          if(index === -1){
+              return;
+          }
+
+          if(state.favouriteQuotes.includes(index)){
+              return;
+          }
+
+          state.favouriteQuotes.push(index);
       },
       removeFromFavourite: (state, action: PayloadAction<number>) => {
           if(action.payload === 0){
@@ -39,9 +63,9 @@ export const historySlice = createSlice({
         },
         randomQuote: (state) => {
 
-            let rand =  ((Math.random() * state.allQuotes.length - 1) + 1);
+            let rand =  Math.floor(((Math.random() * state.allQuotes.length - 1) + 1));
 
-            state.currentQuote = state.allQuotes[rand];
+            state.currentQuote = state.allQuotes[rand] || emptyQuote;
         },
     }
 })
