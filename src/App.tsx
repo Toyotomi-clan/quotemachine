@@ -3,37 +3,58 @@ import logo from './logo.svg';
 import './App.css';
 import {RootState} from "./store/store";
 import {useSelector,useDispatch} from "react-redux";
-import {addQuotes, addfavourite, removeFromFavourite, setCurrentQuote, randomQuote} from "./store/historySlice";
+import {
+    addQuotes,
+    addfavourite,
+    removeFromFavourite,
+    setCurrentQuote,
+    randomQuote
+} from "./store/historySlice";
 import {useGetQuoteQuery} from "./store/quoteSlice"
+import {CurrentQuote} from "./models/qoutes";
 
 function App() {
-  const quote = useSelector((state : RootState)=> state.history.currentQuote)
+  const currentQuote = useSelector((state : RootState)=> state.history.currentQuote)
+  const QuoteMachine = useSelector((state : RootState)=> state.history.allQuotes)
+  const favouriteQuotes = useSelector((state : RootState)=> state.history.favouriteQuotes)
   const dispatch = useDispatch();
   const {data, error,isLoading} =  useGetQuoteQuery();
-
+  let isFavourite = favouriteQuotes.indexOf(currentQuote.id) !== -1;
   if(isLoading){
       return <p>Data is loading</p>
   }
   if(error){
       return <p>Something went wrong sorrrrrry!</p>
   }
-  if(data && data.length){
+  if(data && Object.keys(QuoteMachine).length === 0){
       dispatch(addQuotes(data))
-      if(quote.author == "" || quote.text == "") {
-          dispatch(setCurrentQuote(data[0]))
+      if(currentQuote.quote.author == "" || currentQuote.quote.text == "") {
+          let currentQuote: CurrentQuote = {
+              id: 0,
+              quote: data[0]
+          }
+          dispatch(setCurrentQuote(currentQuote))
       }
   }
   return (
     <div id="quote-box">
 
-        <p id="text">{quote.text}</p>
-        <p id="author">{quote.author}</p>
+        <p id="text">{currentQuote.quote.text}</p>
+        <p id="author">{currentQuote.quote.author}</p>
 
         <button id="new-quote" type="submit" value="Submit" onClick={(event) => {
             event.preventDefault();
-            dispatch(randomQuote())}}> New Quote </button>
+            dispatch(randomQuote())
+        }}> New Quote </button>
 
-        <span className="material-icons " onClick={() => {dispatch(addfavourite(quote))}}>favorite</span>
+        <span className={isFavourite ? "material-icons" : "material-icons-outlined"} onClick={() => {
+            if(isFavourite){
+                dispatch(removeFromFavourite(currentQuote))
+            }
+            else{
+                dispatch(addfavourite(currentQuote))
+            }
+        }}>favorite</span>
     </div>
   );
 }

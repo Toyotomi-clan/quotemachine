@@ -1,21 +1,24 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import qoutes, {Quote} from "../models/qoutes";
+import qoutes, {
+    CurrentQuote,
+    QuoteInitialState,
+    QuoteMachineInitialState,
+    Quote,
+    QuoteMachine,
+    CurrentQuoteInitialState
+} from "../models/qoutes";
+import {stat} from "fs";
 
 export interface HistoryState {
-    allQuotes: Array<Quote>,
+    allQuotes: QuoteMachine,
     favouriteQuotes: Array<number>,
-    currentQuote: Quote
-}
-
-const emptyQuote : Quote = {
-    author: "",
-    text: ""
+    currentQuote: CurrentQuote,
 }
 
 const initialState : HistoryState = {
     allQuotes: [],
     favouriteQuotes: [],
-    currentQuote: emptyQuote
+    currentQuote: CurrentQuoteInitialState,
 }
 
 
@@ -23,49 +26,58 @@ export const historySlice = createSlice({
     name: "history",
     initialState,
     reducers: {
-      addfavourite: (state, action: PayloadAction<Quote>) => {
-          if(action.payload === emptyQuote || state.allQuotes === [] ){
+      addfavourite: (state, action: PayloadAction<CurrentQuote>) => {
+          if(state.allQuotes === QuoteMachineInitialState ){
+              return;
+          }
+          if(action.payload.quote === QuoteInitialState){
               return;
           }
 
-          let quoteInArray = state.allQuotes.find((q,i) =>{
-              return q.author === action.payload.author && q.text === action.payload.text
-          });
-
-          if(!quoteInArray){
+          if(!state.allQuotes.hasOwnProperty(action.payload.id)){
               return;
           }
-          let index = state.allQuotes.indexOf(quoteInArray)
 
+          if(state.favouriteQuotes.indexOf(action.payload.id) !== -1){
+              return;
+          }
+
+          state.favouriteQuotes.push(action.payload.id);
+      },
+      removeFromFavourite: (state, action: PayloadAction<CurrentQuote>) => {
+          if(state.allQuotes === QuoteMachineInitialState ){
+              return;
+          }
+          if(action.payload.quote === QuoteInitialState){
+              return;
+          }
+          let index = state.favouriteQuotes.indexOf(action.payload.id);
           if(index === -1){
               return;
           }
-
-          if(state.favouriteQuotes.includes(index)){
-              return;
-          }
-
-          state.favouriteQuotes.push(index);
+          state.favouriteQuotes.splice(index,1);
       },
-      removeFromFavourite: (state, action: PayloadAction<number>) => {
-          if(action.payload === 0){
-              return;
-          }
-          state.favouriteQuotes = state.favouriteQuotes.filter(x => x !== action.payload);
-      },
-      addQuotes: (state,action : PayloadAction<Quote[]>) => {
+      addQuotes: (state,action : PayloadAction<QuoteMachine>) => {
 
             state.allQuotes = action.payload;
         },
-        setCurrentQuote: (state,action : PayloadAction<Quote>) => {
+        setCurrentQuote: (state,action : PayloadAction<CurrentQuote>) => {
 
             state.currentQuote = action.payload;
         },
         randomQuote: (state) => {
 
-            let rand =  Math.floor(((Math.random() * state.allQuotes.length - 1) + 1));
+            let rand =  Math.floor(((Math.random() * Object.keys(state.allQuotes).length - 1) + 1));
 
-            state.currentQuote = state.allQuotes[rand] || emptyQuote;
+            if(!state.allQuotes.hasOwnProperty(rand)){
+                state.currentQuote = CurrentQuoteInitialState;
+            }
+            let newQuote: CurrentQuote = {
+                id: rand,
+                quote: state.allQuotes[rand]
+            }
+
+            state.currentQuote = newQuote;
         },
     }
 })
