@@ -12,6 +12,15 @@ import {
 } from "./store/historySlice";
 import {useGetQuoteQuery} from "./store/quoteSlice"
 import {CurrentQuote} from "./models/qoutes";
+import {Dispatch} from "@reduxjs/toolkit";
+
+function toggleFavouriteQuote(isFavourite: boolean, dispatch: Dispatch<any>, currentQuote: CurrentQuote) {
+    if (isFavourite) {
+        dispatch(removeFromFavourite(currentQuote))
+    } else {
+        dispatch(addfavourite(currentQuote))
+    }
+}
 
 function App() {
   const currentQuote = useSelector((state : RootState)=> state.history.currentQuote)
@@ -48,12 +57,7 @@ function App() {
         }}> New Quote </button>
 
         <span className={isFavourite ? "material-icons" : "material-icons-outlined"} onClick={() => {
-            if(isFavourite){
-                dispatch(removeFromFavourite(currentQuote))
-            }
-            else{
-                dispatch(addfavourite(currentQuote))
-            }
+            toggleFavouriteQuote(isFavourite, dispatch, currentQuote);
         }}>favorite</span>
     </div>
   );
