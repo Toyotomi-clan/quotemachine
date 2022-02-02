@@ -5,11 +5,12 @@ import {BaseQueryMeta, BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQu
 
 export const quoteApi = createApi({
 
-    baseQuery: fetchBaseQuery({baseUrl: "https://type.fit/api/"}),
+    baseQuery: fetchBaseQuery({baseUrl: `${window.location.origin}`}),
     tagTypes: ["hello"],
     endpoints: (builder) =>({
         getQuote: builder.query<QuoteMachine,void>({
-            query: () => {return `quotes`},
+
+            query: () => {return `quotes.json`},
 
             transformResponse: (baseQueryReturnValue, meta, arg) =>
             {

@@ -14,6 +14,24 @@ import {useGetQuoteQuery} from "./store/quoteSlice"
 import {CurrentQuote} from "./models/qoutes";
 import {Dispatch} from "@reduxjs/toolkit";
 
+import {
+    Flex,
+    VStack,
+    Box,
+    Button,
+    Center,
+    Divider,
+    Text,
+    Code,
+    HStack,
+    Square,
+    Grid,
+    GridItem,
+    SimpleGrid
+} from "@chakra-ui/react";
+import Favourites from './Favourites';
+import DrawerExample from "./Favourites";
+
 function toggleFavouriteQuote(isFavourite: boolean, dispatch: Dispatch<any>, currentQuote: CurrentQuote) {
     if (isFavourite) {
         dispatch(removeFromFavourite(currentQuote))
@@ -46,20 +64,41 @@ function App() {
       }
   }
   return (
-    <div id="quote-box">
 
-        <p id="text">{currentQuote.quote.text}</p>
-        <p id="author">{currentQuote.quote.author}</p>
+    <Flex  w={'full'} h={'100vh'} justify={'center'}>
+          <Square>
+              <SimpleGrid  columns={1} spacing={2} w={'full'}   id="quote-box">
+                <Flex alignItems={'center'}>
+                <Box  shadow={'sm'}>
+                  <Center height='50px'>
+                      <Code colorScheme={'twitter'} id={'text'}>{currentQuote.quote.text}</Code>
+                      <Divider orientation='vertical' />
+                      <Text id={'author'}>{currentQuote.quote.author}</Text>
+                  </Center>
+                </Box>
+                  <Box alignItems={'center'} className={"material-icons"} onClick={() => {
+                      toggleFavouriteQuote(isFavourite, dispatch, currentQuote);
+                  }}>
+                      {isFavourite ? "star" : "star_border"}
+              </Box>
+                </Flex>
+                  <Box textAlign={'center'} >                  <Center height='100px'>
 
-        <button id="new-quote" type="submit" value="Submit" onClick={(event) => {
-            event.preventDefault();
-            dispatch(randomQuote())
-        }}> New Quote </button>
+                  <Button colorScheme="blue" id="new-quote" type="submit" value="Submit" onClick={(event) => {
+                      event.preventDefault();
+                      dispatch(randomQuote())
+                  }}> Get Inspired </Button>
+                      <Divider orientation='vertical' />
 
-        <span className={isFavourite ? "material-icons" : "material-icons-outlined"} onClick={() => {
-            toggleFavouriteQuote(isFavourite, dispatch, currentQuote);
-        }}>favorite</span>
-    </div>
+                      <DrawerExample/>
+                  </Center>
+                  </Box>
+
+
+              </SimpleGrid>
+
+          </Square>
+      </Flex>
   );
 }
 
