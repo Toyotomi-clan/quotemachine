@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AnyAction} from "@reduxjs/toolkit";
 import qoutes, {
     CurrentQuote,
     QuoteInitialState,
@@ -15,8 +16,8 @@ export interface HistoryState {
     currentQuote: CurrentQuote,
 }
 
-const initialState : HistoryState = {
-    allQuotes: [],
+export let defaultState : HistoryState = {
+    allQuotes: {},
     favouriteQuotes: [],
     currentQuote: CurrentQuoteInitialState,
 }
@@ -24,9 +25,9 @@ const initialState : HistoryState = {
 
 export const historySlice = createSlice({
     name: "history",
-    initialState,
+    initialState: defaultState,
     reducers: {
-      addfavourite: (state, action: PayloadAction<CurrentQuote>) => {
+      addfavourite: (state, action: PayloadAction<CurrentQuote>) =>  {
           if(state.allQuotes === QuoteMachineInitialState ){
               return;
           }
@@ -67,8 +68,13 @@ export const historySlice = createSlice({
         },
         randomQuote: (state) => {
 
-            let rand =  Math.floor(((Math.random() * Object.keys(state.allQuotes).length - 1) + 1));
+          let rand = state.currentQuote.id;
+          let count = 0;
 
+          while(rand === state.currentQuote.id  && count < 10) {
+              rand = Math.floor(((Math.random() * Object.keys(state.allQuotes).length - 1) + 1));
+              count++
+          }
             if(!state.allQuotes.hasOwnProperty(rand)){
                 state.currentQuote = CurrentQuoteInitialState;
             }
