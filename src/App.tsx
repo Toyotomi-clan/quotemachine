@@ -32,7 +32,7 @@ function App() {
   }
   if(data && Object.keys(QuoteMachine).length === 0){
       dispatch(addQuotes(data))
-      if(currentQuote.quote.author == "" || currentQuote.quote.text == "") {
+      if(currentQuote.quote.author === "" || currentQuote.quote.text === "") {
           let currentQuote: CurrentQuote = {
               id: 0,
               quote: data[0]

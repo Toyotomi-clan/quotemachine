@@ -18,10 +18,6 @@ import Quote, {CurrentQuote} from "./models/qoutes";
 import {setCurrentQuote} from "./store/historySlice";
 
 
-interface FavouriteProps {
-    favourite: number []
-}
-
 function QuoteElement(quote : Quote) {
 
     let shortQuote = quote.text.length  > 25 ? quote.text.slice(0,15).concat("...")  : quote.text;
