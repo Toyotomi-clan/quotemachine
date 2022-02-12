@@ -1,36 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import {RootState} from "./store/store";
-import {useSelector,useDispatch} from "react-redux";
-import {
-    addQuotes,
-    addfavourite,
-    removeFromFavourite,
-    setCurrentQuote,
-    randomQuote
-} from "./store/historySlice";
+import {useDispatch, useSelector} from "react-redux";
+import {addfavourite, addQuotes, randomQuote, removeFromFavourite, setCurrentQuote} from "./store/historySlice";
 import {useGetQuoteQuery} from "./Service/quoteService"
 import {CurrentQuote} from "./models/qoutes";
 import {Dispatch} from "@reduxjs/toolkit";
 
-import {
-    Flex,
-    VStack,
-    Box,
-    Button,
-    Center,
-    Divider,
-    Text,
-    Code,
-    HStack,
-    Square,
-    Grid,
-    GridItem,
-    SimpleGrid
-} from "@chakra-ui/react";
+import {Box, Button, Center, Code, Divider, Flex, SimpleGrid, Square, Text} from "@chakra-ui/react";
 import Favourites from './Favourites';
-import DrawerExample from "./Favourites";
 
 function toggleFavouriteQuote(isFavourite: boolean, dispatch: Dispatch<any>, currentQuote: CurrentQuote) {
     if (isFavourite) {

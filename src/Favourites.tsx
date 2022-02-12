@@ -1,15 +1,17 @@
 import {
-    Button, Center, Code, Divider,
+    Button,
+    Center,
+    Code,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
     DrawerContent,
     DrawerFooter,
     DrawerHeader,
-    DrawerOverlay, Text,
+    DrawerOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import React, {useState} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/store";
 import Quote, {CurrentQuote} from "./models/qoutes";
