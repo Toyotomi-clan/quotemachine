@@ -1,14 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AnyAction} from "@reduxjs/toolkit";
-import qoutes, {
+import {
     CurrentQuote,
+    CurrentQuoteInitialState,
     QuoteInitialState,
-    QuoteMachineInitialState,
-    Quote,
     QuoteMachine,
-    CurrentQuoteInitialState
+    QuoteMachineInitialState
 } from "../models/qoutes";
-import {stat} from "fs";
 
 export interface HistoryState {
     allQuotes: QuoteMachine,

@@ -2,13 +2,13 @@ import reducer, {
     addfavourite,
     addQuotes,
     defaultState,
-    historySlice,
-    HistoryState, randomQuote,
-    removeFromFavourite, setCurrentQuote
+    HistoryState,
+    randomQuote,
+    removeFromFavourite,
+    setCurrentQuote
 } from "./historySlice";
-import {CurrentQuote, CurrentQuoteInitialState, QuoteInitialState, QuoteMachine} from "../models/qoutes";
+import {CurrentQuote, CurrentQuoteInitialState, QuoteMachine} from "../models/qoutes";
 import {AnyAction} from "@reduxjs/toolkit";
-import quoteSlice from "../Service/quoteService";
 
 const action : AnyAction = {
     type: undefined
