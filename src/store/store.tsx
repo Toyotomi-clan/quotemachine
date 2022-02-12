@@ -1,9 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore, createStore} from "@reduxjs/toolkit";
 import {setupListeners} from "@reduxjs/toolkit/query";
-import quoteApi from "./quoteSlice";
+import quoteApi from "../Service/quoteService";
 import historyReducer from "./historySlice"
 
-export const store = configureStore({
+export const creatStore  = () => configureStore({
     reducer: {
         history : historyReducer,
         [quoteApi.reducerPath]:quoteApi.reducer
@@ -12,6 +12,8 @@ export const store = configureStore({
         return getDefaultMiddleware().concat(quoteApi.middleware);
     }
 });
+
+export const store = creatStore();
 
 export type RootState = ReturnType<typeof store.getState>;
 

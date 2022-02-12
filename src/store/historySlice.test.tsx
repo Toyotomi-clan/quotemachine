@@ -8,7 +8,7 @@ import reducer, {
 } from "./historySlice";
 import {CurrentQuote, CurrentQuoteInitialState, QuoteInitialState, QuoteMachine} from "../models/qoutes";
 import {AnyAction} from "@reduxjs/toolkit";
-import quoteSlice from "./quoteSlice";
+import quoteSlice from "../Service/quoteService";
 
 const action : AnyAction = {
     type: undefined

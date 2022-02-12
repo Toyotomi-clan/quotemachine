@@ -44,7 +44,7 @@ function QuoteElement(quote : Quote) {
     }
 }
 
-export default function DrawerExample(){
+export default function Favourites(){
     const { isOpen, onOpen, onClose } = useDisclosure()
     const QuoteMachine = useSelector((state : RootState)=> state.history.allQuotes)
     const favouriteQuotes = useSelector((state : RootState)=> state.history.favouriteQuotes)

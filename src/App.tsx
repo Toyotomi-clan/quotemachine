@@ -10,7 +10,7 @@ import {
     setCurrentQuote,
     randomQuote
 } from "./store/historySlice";
-import {useGetQuoteQuery} from "./store/quoteSlice"
+import {useGetQuoteQuery} from "./Service/quoteService"
 import {CurrentQuote} from "./models/qoutes";
 import {Dispatch} from "@reduxjs/toolkit";
 
@@ -71,9 +71,9 @@ function App() {
                 <Flex alignItems={'center'}>
                 <Box  shadow={'sm'}>
                   <Center height='50px'>
-                      <Code colorScheme={'twitter'} id={'text'}>{currentQuote.quote.text}</Code>
+                      <Code role={'quote'} colorScheme={'twitter'} id={'text'}>{currentQuote.quote.text}</Code>
                       <Divider orientation='vertical' />
-                      <Text id={'author'}>{currentQuote.quote.author}</Text>
+                      <Text role={'author'} id={'author'}>{currentQuote.quote.author}</Text>
                   </Center>
                 </Box>
                   <Box alignItems={'center'} className={"material-icons"} onClick={() => {
@@ -82,15 +82,20 @@ function App() {
                       {isFavourite ? "star" : "star_border"}
               </Box>
                 </Flex>
-                  <Box textAlign={'center'} >                  <Center height='100px'>
+                  <Box textAlign={'center'} >
+                      <Center height='100px'>
 
-                  <Button colorScheme="blue" id="new-quote" type="submit" value="Submit" onClick={(event) => {
-                      event.preventDefault();
-                      dispatch(randomQuote())
-                  }}> Get Inspired </Button>
-                      <Divider orientation='vertical' />
+                      <Button colorScheme="blue" id="new-quote" type="submit" value="Submit" onClick={(event) => {
+                          event.preventDefault();
+                          dispatch(randomQuote())
+                      }}> Get Inspired </Button>
+                          <Divider orientation='vertical' />
 
-                      <DrawerExample/>
+                      <Favourites/>
+
+                           <a id={"tweet-quote"}
+                              href={`https://twitter.com/intent/tweet?hashtags=${currentQuote.quote.author.replace(" ","")},quoteOfTheDay&text=${currentQuote.quote.text}`}>
+                               <span className="material-icons">share</span></a>
                   </Center>
                   </Box>
 
