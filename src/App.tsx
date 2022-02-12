@@ -71,7 +71,7 @@ function App() {
                       <Favourites/>
 
                            <a id={"tweet-quote"}
-                              href={`https://twitter.com/intent/tweet?hashtags=${currentQuote.quote.author.replace(" ","")},quoteOfTheDay&text=${currentQuote.quote.text}`}>
+                              href={`https://twitter.com/intent/tweet?hashtags=${currentQuote.quote.author?.replace(" ","")},quoteOfTheDay&text=${currentQuote.quote.text}`}>
                                <span className="material-icons">share</span></a>
                   </Center>
                   </Box>
